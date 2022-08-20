@@ -1,32 +1,18 @@
+import Link from "next/link";
+
 const Nav = () => {
   return (
-    <ul className="nav justify-content-center">
-      <li className="nav-item">
-        <a className="nav-link active" aria-current="page" href="#">
-          Active
-        </a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" href="#">
-          Link
-        </a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" href="#">
-          Link
-        </a>
-      </li>
-      <li className="nav-item">
-        <a
-          className="nav-link disabled"
-          href="#"
-          tabindex="-1"
-          aria-disabled="true"
-        >
-          Disabled
-        </a>
-      </li>
-    </ul>
+    <nav className="nav bg-dark d-flex justify-content-between">
+      <Link href="/">
+        <a className="nav-link text-light">Home</a>
+      </Link>
+      <Link href="/login">
+        <a className="nav-link text-light">Login</a>
+      </Link>
+      <Link href="/register">
+        <a className="nav-link text-light">Register</a>
+      </Link>
+    </nav>
   );
 };
 
