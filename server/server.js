@@ -1,8 +1,9 @@
-import express from "express";
-import mongoose from "mongoose";
-import cors from "cors";
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config();
+const { readdirSync } = require("fs");
 
 const app = express();
 
@@ -10,8 +11,6 @@ mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
   })
   .then(() => console.log("DB connected"))
   .catch((err) => console.log("DB connection error", err));
@@ -24,9 +23,7 @@ app.use(
   })
 );
 
-app.post("/api/register", (req, res) => {
-  console.log("Register endpoint => ", req.body);
-});
+readdirSync("./routes").map((r) => app.use("/api", require(`./routes/${r}`)));
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Server running on port: ${port}`));
