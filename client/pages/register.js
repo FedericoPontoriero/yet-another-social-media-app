@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { SyncOutlined } from '@ant-design/icons';
+import { Modal } from 'antd';
 import axios from "axios";
-import { toast } from 'react-toastify'
-import { Modal } from 'antd'
-import Link from 'next/link'
+import Link from 'next/link';
+import { useState } from "react";
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -10,18 +11,25 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
   const [ok, setOk] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const { data } = await axios
-        .post("http://localhost:8000/api/register", {
+        .post(`${process.env.NEXT_PUBLIC_API}/register`, {
           name,
           email,
           password,
           secret,
         })
+      setName('')
+      setEmail('')
+      setPassword('')
+      setSecret('')
       setOk(data.ok)
+      setLoading(false)
     } catch (err) {
       toast.error(err.response.data)
     }
@@ -96,7 +104,10 @@ const Register = () => {
               />
             </div>
             <div className="form-group p-2">
-              <button className="btn btn-primary col-12">Submit</button>
+              <button disabled={!name || !email || !secret || !password}
+                className="btn btn-primary col-12">Submit
+                {loading ? <SyncOutlined spin className='py-1' /> : 'Submit'}
+              </button>
             </div>
           </form>
         </div>
