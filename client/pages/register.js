@@ -1,9 +1,9 @@
-import { SyncOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import axios from "axios";
 import Link from 'next/link';
 import { useState } from "react";
 import { toast } from 'react-toastify';
+import AuthForm from '../components/forms/AuthForm';
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -37,79 +37,25 @@ const Register = () => {
 
   return (
     <div className="container-fluid">
-      <div className="row py-5 bg-secondary text-light">
+      <div className="row py-5 bg-default-image text-light">
         <div className="col text-center">
           <h1>Register</h1>
         </div>
       </div>
       <div className="row py-5">
         <div className="col-md-6 offset-md-3">
-          <form onSubmit={handleSubmit}>
-            <div className="form-group p-2">
-              <small>
-                <label className="text-muted">Your name</label>
-              </small>
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                type="text"
-                className="form-control"
-                placeholder="Enter name"
-              />
-            </div>
-            <div className="form-group p-2">
-              <small>
-                <label className="text-muted">Email address</label>
-              </small>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                className="form-control"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div className="form-group p-2">
-              <small>
-                <label className="text-muted">Password</label>
-              </small>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                className="form-control"
-                placeholder="Password"
-              />
-            </div>
-            <div className="form-group p-2">
-              <small>
-                <label className="text-muted">Pick a question</label>
-              </small>
-              <select className="form-control">
-                <option>What is your favourite color?</option>
-                <option>What is your best friend's name?</option>
-                <option>Where were you born?</option>
-              </select>
-              <small className="form-text text-muted">
-                You can use this to reset your password if forgotten.
-              </small>
-            </div>
-            <div className="form-group p-2">
-              <input
-                value={secret}
-                onChange={(e) => setSecret(e.target.value)}
-                type="text"
-                className="form-control"
-                placeholder="Write your answer here"
-              />
-            </div>
-            <div className="form-group p-2">
-              <button disabled={!name || !email || !secret || !password}
-                className="btn btn-primary col-12">Submit
-                {loading ? <SyncOutlined spin className='py-1' /> : 'Submit'}
-              </button>
-            </div>
-          </form>
+          <AuthForm
+            handleSubmit={handleSubmit}
+            name={name}
+            setName={setName}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            secret={secret}
+            setSecret={setSecret}
+            loading
+          />
         </div>
       </div>
       <div className="row">
