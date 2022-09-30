@@ -1,3 +1,29 @@
-export const register = (req, res) => {
-  console.log("Register endpoint => ", req.body);
+import User from "../models/user";
+import { hashPassword, comparePassword } from '../helpers/auth'
+
+export const register = async (req, res) => {
+  const { name, email, password, secret } = req.body;
+  if (!name)
+    return res.status(400).send('Name is required');
+  if (!email)
+    return res.status(400).send('Email is required');
+  if (!password || password.length < 6)
+    return res.status(400).send('Password is required & should be 6 characters minimum');
+  if (!secret)
+    return res.status(400).send('Answer is required');
+  const exists = await User.findOne({ email })
+  if (exists) return res.status(400).send('Email is taken')
+
+  const hashedPassword = await hashPassword(password)
+
+  const user = new User({ name, email, password: hashedPassword, secret })
+  try {
+    await user.save()
+    return res.json({
+      ok: true
+    })
+  } catch (e) {
+    console.log('register failed => ', err);
+    return res.status(400).send('Error, try again')
+  }
 };
