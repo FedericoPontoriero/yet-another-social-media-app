@@ -22,15 +22,27 @@ const Nav = () => {
       <Link href="/">
         <a className="nav-link text-light">HOME</a>
       </Link>
-      <Link href="/login">
-        <a className="nav-link text-light">Login</a>
-      </Link>
-      <Link href="/register">
-        <a className="nav-link text-light">Register</a>
-      </Link>
-      <a className="nav-link text-light" onClick={logout}>
-        Logout
-      </a>
+      {state !== null ? (
+        <>
+          <Link href="/user/dashboard">
+            <a className="nav-link text-light">
+              {state && state.user && state.user.name}
+            </a>
+          </Link>
+          <a className="nav-link text-light" onClick={logout}>
+            Logout
+          </a>
+        </>
+      ) : (
+        <>
+          <Link href="/login">
+            <a className="nav-link text-light">Login</a>
+          </Link>
+          <Link href="/register">
+            <a className="nav-link text-light">Register</a>
+          </Link>
+        </>
+      )}
     </nav>
   );
 };
