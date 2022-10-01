@@ -1,10 +1,15 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { UserContext } from "../context";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const Nav = () => {
+  const [current, setCurrent] = useState("");
   const [state, setState] = useContext(UserContext);
+
+  useEffect(() => {
+    process.browser && setCurrent(window.location.pathname);
+  }, [process.browser && window.location.pathname]);
 
   const router = useRouter();
 
@@ -20,12 +25,20 @@ const Nav = () => {
       style={{ backgroundColor: "blue" }}
     >
       <Link href="/">
-        <a className="nav-link text-light">HOME</a>
+        <a
+          className={`nav-link text-light logo ${current === "/" && "active"}`}
+        >
+          HOME
+        </a>
       </Link>
       {state !== null ? (
         <>
           <Link href="/user/dashboard">
-            <a className="nav-link text-light">
+            <a
+              className={`nav-link text-light ${
+                current === "/user/dashboard" && "active"
+              }`}
+            >
               {state && state.user && state.user.name}
             </a>
           </Link>
@@ -36,10 +49,22 @@ const Nav = () => {
       ) : (
         <>
           <Link href="/login">
-            <a className="nav-link text-light">Login</a>
+            <a
+              className={`nav-link text-light ${
+                current === "/login" && "active"
+              }`}
+            >
+              Login
+            </a>
           </Link>
           <Link href="/register">
-            <a className="nav-link text-light">Register</a>
+            <a
+              className={`nav-link text-light ${
+                current === "/register" && "active"
+              }`}
+            >
+              Register
+            </a>
           </Link>
         </>
       )}
