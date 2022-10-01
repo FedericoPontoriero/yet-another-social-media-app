@@ -32,6 +32,7 @@ const Register = () => {
       setLoading(false)
     } catch (err) {
       toast.error(err.response.data)
+      setLoading(false)
     }
   };
 
@@ -54,7 +55,7 @@ const Register = () => {
             setPassword={setPassword}
             secret={secret}
             setSecret={setSecret}
-            loading
+            loading={loading}
           />
         </div>
       </div>
@@ -73,6 +74,16 @@ const Register = () => {
               <a className="btn btn-primary btn-sm">Login</a>
             </Link>
           </Modal>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <p className="text-center">
+            Already registered?
+            <Link href='/login'>
+              <a>Login</a>
+            </Link>
+          </p>
         </div>
       </div>
     </div>
