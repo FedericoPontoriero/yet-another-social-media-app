@@ -1,31 +1,41 @@
-import { Modal } from 'antd';
+import { Modal } from "antd";
 import axios from "axios";
-import Link from 'next/link';
-import { useState } from "react";
-import { toast } from 'react-toastify';
-import AuthForm from '../components/forms/AuthForm';
-import { useRouter } from 'next/router'
+import Link from "next/link";
+import { useState, useContext } from "react";
+import { toast } from "react-toastify";
+import AuthForm from "../components/forms/AuthForm";
+import { useRouter } from "next/router";
+import { UserContext } from "../context";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const router = useRouter()
+  const [state, setState] = useContext(UserContext);
+
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
-      const { data } = await axios
-        .post(`${process.env.NEXT_PUBLIC_API}/login`, {
+      setLoading(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/login`,
+        {
           email,
           password,
-        })
-      router.push('/')
+        }
+      );
+      setState({
+        user: data.user,
+        token: data.token,
+      });
+      window.localStorage.setItem("auth", JSON.stringify(data));
+      router.push("/");
     } catch (err) {
-      toast.error(err.response.data)
-      setLoading(false)
+      toast.error(err.response.data);
+      setLoading(false);
     }
   };
 
@@ -45,7 +55,7 @@ const Login = () => {
             password={password}
             setPassword={setPassword}
             loading={loading}
-            page='login'
+            page="login"
           />
         </div>
       </div>
@@ -53,7 +63,7 @@ const Login = () => {
         <div className="col">
           <p className="text-center">
             Not yet registered?
-            <Link href='/register'>
+            <Link href="/register">
               <a>Register</a>
             </Link>
           </p>
