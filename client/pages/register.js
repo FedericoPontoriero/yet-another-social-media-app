@@ -1,40 +1,49 @@
-import { Modal } from 'antd';
+import { UserContext } from "../context";
+import { Modal } from "antd";
 import axios from "axios";
-import Link from 'next/link';
-import { useState } from "react";
-import { toast } from 'react-toastify';
-import AuthForm from '../components/forms/AuthForm';
+import Link from "next/link";
+import { useState, useContext } from "react";
+import { toast } from "react-toastify";
+import AuthForm from "../components/forms/AuthForm";
+import { useRouter } from "next/router";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
-  const [ok, setOk] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [ok, setOk] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [state] = useContext(UserContext);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
-      const { data } = await axios
-        .post(`${process.env.NEXT_PUBLIC_API}/register`, {
+      setLoading(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/register`,
+        {
           name,
           email,
           password,
           secret,
-        })
-      setName('')
-      setEmail('')
-      setPassword('')
-      setSecret('')
-      setOk(data.ok)
-      setLoading(false)
+        }
+      );
+      setName("");
+      setEmail("");
+      setPassword("");
+      setSecret("");
+      setOk(data.ok);
+      setLoading(false);
     } catch (err) {
-      toast.error(err.response.data)
-      setLoading(false)
+      toast.error(err.response.data);
+      setLoading(false);
     }
   };
+
+  if (state && state.token) router.push("/");
 
   return (
     <div className="container-fluid">
@@ -62,15 +71,13 @@ const Register = () => {
       <div className="row">
         <div className="col">
           <Modal
-            title='Congratulations!'
+            title="Congratulations!"
             visible={ok}
             onCancel={setOk(false)}
             footer={null}
           >
-            <p>
-              You have successfully registered!
-            </p>
-            <Link href='/login'>
+            <p>You have successfully registered!</p>
+            <Link href="/login">
               <a className="btn btn-primary btn-sm">Login</a>
             </Link>
           </Modal>
@@ -80,7 +87,7 @@ const Register = () => {
         <div className="col">
           <p className="text-center">
             Already registered?
-            <Link href='/login'>
+            <Link href="/login">
               <a>Login</a>
             </Link>
           </p>

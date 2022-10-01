@@ -1,10 +1,9 @@
-import { Modal } from "antd";
 import axios from "axios";
 import Link from "next/link";
-import { useState, useContext } from "react";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import AuthForm from "../components/forms/AuthForm";
-import { useRouter } from "next/router";
 import { UserContext } from "../context";
 
 const Login = () => {
@@ -38,6 +37,8 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  if (state && state.token) router.push("/");
 
   return (
     <div className="container-fluid">
