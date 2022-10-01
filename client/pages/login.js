@@ -52,7 +52,7 @@ const Login = () => {
       <div className="row">
         <div className="col">
           <p className="text-center">
-            Not yet registered
+            Not yet registered?
             <Link href='/register'>
               <a>Register</a>
             </Link>
