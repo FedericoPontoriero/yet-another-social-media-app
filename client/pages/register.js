@@ -28,12 +28,17 @@ const Register = () => {
         password,
         secret,
       });
-      setName("");
-      setEmail("");
-      setPassword("");
-      setSecret("");
-      setOk(data.ok);
-      setLoading(false);
+
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        setName("");
+        setEmail("");
+        setPassword("");
+        setSecret("");
+        setOk(data.ok);
+        setLoading(false);
+      }
     } catch (err) {
       toast.error(err.response.data);
       setLoading(false);

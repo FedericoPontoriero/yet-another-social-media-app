@@ -4,15 +4,32 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { name, email, password, secret } = req.body;
-  if (!name) return res.status(400).send("Name is required");
-  if (!email) return res.status(400).send("Email is required");
-  if (!password || password.length < 6)
-    return res
-      .status(400)
-      .send("Password is required & should be 6 characters minimum");
-  if (!secret) return res.status(400).send("Answer is required");
+  if (!name) {
+    return res.json({
+      error: "Name is required",
+    });
+  }
+  if (!email) {
+    return res.json({
+      error: "Email is required",
+    });
+  }
+  if (!password || password.length < 6) {
+    return res.json({
+      error: "Password is required and should be 6 characters long",
+    });
+  }
+  if (!secret) {
+    return res.json({
+      error: "Answer is required",
+    });
+  }
   const exists = await User.findOne({ email });
-  if (exists) return res.status(400).send("Email is taken");
+  if (exists) {
+    return res.json({
+      error: "Email is taken",
+    });
+  }
 
   const hashedPassword = await hashPassword(password);
 
@@ -33,10 +50,18 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).send("No user found");
+    if (!user) {
+      return res.json({
+        error: "No user found",
+      });
+    }
 
     const match = await comparePassword(password, user.password);
-    if (!match) return res.status(400).send("Wrong password");
+    if (!match) {
+      return res.json({
+        error: "Wrong password",
+      });
+    }
 
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
