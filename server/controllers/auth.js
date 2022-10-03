@@ -62,3 +62,39 @@ export const currentUser = async (req, res) => {
     res.sendStatus(400);
   }
 };
+
+export const forgotPassword = async (req, res) => {
+  const { email, newPassword, secret } = req.body;
+
+  if (!newPassword || !newPassword.length < 6) {
+    return res.json({
+      error: "New password is required and should be minimum 6 characters long",
+    });
+  }
+
+  if (!secret) {
+    return res.json({
+      error: "Secret is required",
+    });
+  }
+
+  const user = await User.findOne({ email, secret });
+  if (!user) {
+    return res.json({
+      error: "We can'\t verify you with those details",
+    });
+  }
+
+  try {
+    const hashed = await hashPassword(newPassword);
+    await User.findByIdAndUpdate(user._id, { password: hashed });
+    return res.json({
+      success: "Congrats, now you can login with your new password",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({
+      error: "Something went wrong. Try again.",
+    });
+  }
+};
