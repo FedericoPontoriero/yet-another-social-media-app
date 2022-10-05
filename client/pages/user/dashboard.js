@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import UserRoute from "../../components/routes/UserRoute";
 import CreatePostForm from "../../components/forms/CreatePostForm";
@@ -18,6 +19,12 @@ const Home = () => {
 
     try {
       const { data } = await axios.post("/create-post", { content });
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success("Post created");
+        setContent("");
+      }
     } catch (err) {
       console.log(err);
     }
