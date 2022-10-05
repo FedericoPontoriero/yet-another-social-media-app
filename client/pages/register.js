@@ -31,6 +31,7 @@ const Register = () => {
 
       if (data.error) {
         toast.error(data.error);
+        setLoading(false);
       } else {
         setName("");
         setEmail("");
