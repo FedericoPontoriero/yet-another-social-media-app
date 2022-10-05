@@ -1,16 +1,20 @@
 import { Avatar } from "antd";
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
 
 const CreatePostForm = ({ content, setContent, postSubmit }) => {
   return (
     <div className="card">
       <div className="card-body pb-3">
         <form className="form-group">
-          <textarea
+          <ReactQuill
+            theme="snow"
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => setContent(e)}
             className="form-control"
             placeholder="Write something..."
-          ></textarea>
+          />
         </form>
       </div>
       <div className="card-footer">
