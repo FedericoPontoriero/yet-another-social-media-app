@@ -30,6 +30,17 @@ const Home = () => {
     }
   };
 
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    let formData = new FormData();
+    formData.append("image", file);
+    try {
+      const { data } = await axios.post("/upload-image", formData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <UserRoute>
       <div className="container-fluid">
@@ -41,6 +52,7 @@ const Home = () => {
         <div className="row py-3">
           <div className="col-md-8">
             <CreatePostForm
+              handleImage={handleImage}
               content={content}
               setContent={setContent}
               postSubmit={postSubmit}

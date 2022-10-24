@@ -41,7 +41,7 @@ const Login = () => {
     }
   };
 
-  if (state && state.token) router.push("/");
+  if (state && state.token) push.router("/");
 
   return (
     <div className="container-fluid">
