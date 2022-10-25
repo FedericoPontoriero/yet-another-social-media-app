@@ -3,7 +3,7 @@ import formidable from "express-formidable";
 
 const router = express.Router();
 
-const { createPost, uploadImage } = require("../controllers/post");
+const { createPost, postsByUser, uploadImage } = require("../controllers/post");
 
 const { requireSignIn } = require("../middlewares/auth");
 
@@ -14,5 +14,7 @@ router.post(
   formidable({ maxFileSize: 5 * 1024 * 1024 }),
   uploadImage
 );
+
+router.get("/user-posts", requireSignIn, postsByUser);
 
 module.exports = router;

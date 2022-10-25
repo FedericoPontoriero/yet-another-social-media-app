@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 import UserRoute from "../../components/routes/UserRoute";
 import CreatePostForm from "../../components/forms/CreatePostForm";
+import PostList from "../../components/cards/PostList";
 
 const Home = () => {
   const [state, setState] = useContext(UserContext);
@@ -13,8 +14,22 @@ const Home = () => {
   const [content, setContent] = useState("");
   const [image, setImage] = useState({});
   const [uploading, setUploading] = useState(false);
+  const [posts, setPosts] = useState([]);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (state && state.token) fetchUserPosts();
+  }, [state && state.token]);
+
+  const fetchUserPosts = async () => {
+    try {
+      const { data } = await axios.get("/user-posts");
+      setPosts(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const postSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +39,7 @@ const Home = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
+        fetchUserPosts();
         toast.success("Post created");
         setContent("");
         setImage({});
@@ -69,6 +85,8 @@ const Home = () => {
               setContent={setContent}
               postSubmit={postSubmit}
             />
+            <br />
+            <PostList posts={posts} />
           </div>
           <div className="col-md-4">Sidebar</div>
         </div>
