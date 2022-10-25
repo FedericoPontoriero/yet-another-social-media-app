@@ -11,6 +11,8 @@ const Home = () => {
   const [state, setState] = useContext(UserContext);
 
   const [content, setContent] = useState("");
+  const [image, setImage] = useState({});
+  const [uploading, setUploading] = useState(false);
 
   const router = useRouter();
 
@@ -18,12 +20,13 @@ const Home = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post("/create-post", { content });
+      const { data } = await axios.post("/create-post", { content, image });
       if (data.error) {
         toast.error(data.error);
       } else {
         toast.success("Post created");
         setContent("");
+        setImage({});
       }
     } catch (err) {
       console.log(err);
@@ -34,10 +37,17 @@ const Home = () => {
     const file = e.target.files[0];
     let formData = new FormData();
     formData.append("image", file);
+    setUploading(true);
     try {
       const { data } = await axios.post("/upload-image", formData);
+      setImage({
+        url: data.url,
+        public_id: data.public_id,
+      });
+      setUploading(false);
     } catch (err) {
       console.log(err);
+      setUploading(false);
     }
   };
 
@@ -52,6 +62,8 @@ const Home = () => {
         <div className="row py-3">
           <div className="col-md-8">
             <CreatePostForm
+              uploading={uploading}
+              image={image}
               handleImage={handleImage}
               content={content}
               setContent={setContent}
