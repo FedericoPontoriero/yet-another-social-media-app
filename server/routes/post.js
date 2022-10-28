@@ -3,9 +3,16 @@ import formidable from "express-formidable";
 
 const router = express.Router();
 
-const { createPost, postsByUser, uploadImage } = require("../controllers/post");
+const {
+  createPost,
+  postsByUser,
+  uploadImage,
+  userPost,
+  updatePost,
+  deletePost,
+} = require("../controllers/post");
 
-const { requireSignIn } = require("../middlewares/auth");
+const { requireSignIn, canEditDeletePost } = require("../middlewares/auth");
 
 router.post("/create-post", requireSignIn, createPost);
 router.post(
@@ -16,5 +23,13 @@ router.post(
 );
 
 router.get("/user-posts", requireSignIn, postsByUser);
+router.get("/user-posts/:_id", requireSignIn, userPost);
+router.put("/update-post/:_id", requireSignIn, canEditDeletePost, updatePost);
+router.delete(
+  "/delete-post/:_id",
+  requireSignIn,
+  canEditDeletePost,
+  deletePost
+);
 
 module.exports = router;
