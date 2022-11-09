@@ -72,10 +72,13 @@ const Home = () => {
       const answer = window.confirm("Are you sure?");
       if (!answer) return;
       const { data } = await axios.delete(`/delete-post/${post._id}`);
+      toast.error("Post deleted");
+      fetchUserPosts();
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <UserRoute>
       <div className="container-fluid">
@@ -95,7 +98,7 @@ const Home = () => {
               postSubmit={postSubmit}
             />
             <br />
-            <PostList posts={posts} />
+            <PostList handleDelete={handleDelete} posts={posts} />
           </div>
           <div className="col-md-4">Sidebar</div>
         </div>
