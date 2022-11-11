@@ -46,7 +46,7 @@ const ProfileUpdate = () => {
         toast.error(data.error);
         setLoading(false);
       } else {
-        setOk(data.ok);
+        setOk(true);
         setLoading(false);
       }
     } catch (err) {
@@ -91,10 +91,7 @@ const ProfileUpdate = () => {
             onCancel={setOk(false)}
             footer={null}
           >
-            <p>You have successfully registered!</p>
-            <Link href="/login">
-              <a className="btn btn-primary btn-sm">Login</a>
-            </Link>
+            <p>You have successfully updated your profile!</p>
           </Modal>
         </div>
       </div>
