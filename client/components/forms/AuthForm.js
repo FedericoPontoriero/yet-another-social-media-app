@@ -48,6 +48,7 @@ const AuthForm = ({
         />
       </div>
     )}
+
     {page !== "login" && (
       <div className="form-group p-2">
         <small>
@@ -73,6 +74,7 @@ const AuthForm = ({
         type="email"
         className="form-control"
         placeholder="Enter your email"
+        disabled={profileUpdate}
       />
     </div>
 
@@ -117,7 +119,9 @@ const AuthForm = ({
     <div className="form-group p-2">
       <button
         disabled={
-          page === "login"
+          profileUpdate
+            ? loading
+            : page === "login"
             ? !email || !password
             : !name || !email || !secret || !password || loading
         }

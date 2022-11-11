@@ -2,7 +2,7 @@ import { UserContext } from "../../../context";
 import { Modal } from "antd";
 import axios from "axios";
 import Link from "next/link";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import AuthForm from "../../../components/forms/AuthForm";
 import { useRouter } from "next/router";
@@ -20,11 +20,22 @@ const ProfileUpdate = () => {
   const [state] = useContext(UserContext);
   const router = useRouter();
 
+  useEffect(() => {
+    if (state && state.user) {
+      setUsername(state.user.username);
+      setAbout(state.user.about);
+      setName(state.user.name);
+      setEmail(state.user.email);
+    }
+  }, [state && state.user]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { data } = await axios.post(`/register`, {
+      const { data } = await axios.post(`/profile-update`, {
+        username,
+        about,
         name,
         email,
         password,
@@ -35,10 +46,6 @@ const ProfileUpdate = () => {
         toast.error(data.error);
         setLoading(false);
       } else {
-        setName("");
-        setEmail("");
-        setPassword("");
-        setSecret("");
         setOk(data.ok);
         setLoading(false);
       }
@@ -58,6 +65,7 @@ const ProfileUpdate = () => {
       <div className="row py-5">
         <div className="col-md-6 offset-md-3">
           <AuthForm
+            profileUpdate={true}
             handleSubmit={handleSubmit}
             about={about}
             setAbout={setAbout}
