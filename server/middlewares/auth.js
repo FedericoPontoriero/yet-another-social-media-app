@@ -1,6 +1,7 @@
 import expressJwt from "express-jwt";
 
 import Post from "../models/post";
+import User from "../models/user";
 
 export const requireSignIn = expressJwt({
   secret: process.env.JWT_SECRET,
@@ -15,6 +16,20 @@ export const canEditDeletePost = async (req, res, next) => {
     } else {
       next();
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const findPeople = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    let following = user.following;
+    following.push(user._id);
+    const people = await User.find({
+      _id: { $nin: following },
+    }).limit(10);
+    res.json(people);
   } catch (err) {
     console.log(err);
   }
