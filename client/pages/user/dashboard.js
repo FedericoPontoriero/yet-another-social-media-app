@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import UserRoute from "../../components/routes/UserRoute";
 import PostForm from "../../components/forms/PostForm";
 import PostList from "../../components/cards/PostList";
+import People from "../../components/People";
 
 const Home = () => {
   const [state, setState] = useContext(UserContext);
@@ -15,11 +16,15 @@ const Home = () => {
   const [image, setImage] = useState({});
   const [uploading, setUploading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [people, setPeople] = useState([]);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (state && state.token) fetchUserPosts();
+    if (state && state.token) {
+      fetchUserPosts();
+      findPeople();
+    }
   }, [state && state.token]);
 
   const fetchUserPosts = async () => {
@@ -31,6 +36,14 @@ const Home = () => {
     }
   };
 
+  const findPeople = async () => {
+    try {
+      const { data } = await axios.get("/find-people");
+      setPeople(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const postSubmit = async (e) => {
     e.preventDefault();
 
@@ -100,7 +113,9 @@ const Home = () => {
             <br />
             <PostList handleDelete={handleDelete} posts={posts} />
           </div>
-          <div className="col-md-4">Sidebar</div>
+          <div className="col-md-4">
+            <People people={people} />
+          </div>
         </div>
       </div>
     </UserRoute>
