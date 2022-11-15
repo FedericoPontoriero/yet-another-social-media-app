@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 
 import { UserContext } from "../context";
 
-const People = ({ people }) => {
+const People = ({ people, handleFollow }) => {
   const [state] = useContext(UserContext);
 
   const router = useRouter();
@@ -23,15 +23,21 @@ const People = ({ people }) => {
       <List
         itemLayout="horizontal"
         dataSource={people}
-        renderItem={(person) => (
+        renderItem={(user) => (
           <List.Item>
             <List.Item.Meta
               title={
                 <div className="d-flex justify-content-between">
-                  {person.username} <span className="text-primary">Follow</span>
+                  {user.username}{" "}
+                  <span
+                    onClick={() => handleFollow(user)}
+                    className="pointer text-primary"
+                  >
+                    Follow
+                  </span>
                 </div>
               }
-              avatar={<Avatar src={imageSource()} />}
+              avatar={<Avatar src={imageSource(user)} />}
             />
           </List.Item>
         )}

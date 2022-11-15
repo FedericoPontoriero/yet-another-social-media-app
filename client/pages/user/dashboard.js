@@ -92,6 +92,14 @@ const Home = () => {
     }
   };
 
+  const handleFollow = async (user) => {
+    try {
+      const { data } = await axios.put("/user-follow", { _id: user._id });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <UserRoute>
       <div className="container-fluid">
@@ -114,7 +122,7 @@ const Home = () => {
             <PostList handleDelete={handleDelete} posts={posts} />
           </div>
           <div className="col-md-4">
-            <People people={people} />
+            <People handleFollow={handleFollow} people={people} />
           </div>
         </div>
       </div>
