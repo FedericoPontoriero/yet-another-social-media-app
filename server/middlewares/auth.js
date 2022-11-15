@@ -28,7 +28,9 @@ export const findPeople = async (req, res) => {
     following.push(user._id);
     const people = await User.find({
       _id: { $nin: following },
-    }).limit(10);
+    })
+      .select("-password -secret")
+      .limit(10);
     res.json(people);
   } catch (err) {
     console.log(err);

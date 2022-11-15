@@ -10,6 +10,14 @@ const People = ({ people }) => {
 
   const router = useRouter();
 
+  const imageSource = (user) => {
+    if (user.image) {
+      return user.image.url;
+    } else {
+      return "/images/default.jpg";
+    }
+  };
+
   return (
     <>
       <List
@@ -19,10 +27,11 @@ const People = ({ people }) => {
           <List.Item>
             <List.Item.Meta
               title={
-                <div>
-                  {person.username} <span>Follow</span>
+                <div className="d-flex justify-content-between">
+                  {person.username} <span className="text-primary">Follow</span>
                 </div>
               }
+              avatar={<Avatar src={imageSource()} />}
             />
           </List.Item>
         )}
