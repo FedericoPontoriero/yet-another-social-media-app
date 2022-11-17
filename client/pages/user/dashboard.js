@@ -8,6 +8,7 @@ import UserRoute from "../../components/routes/UserRoute";
 import PostForm from "../../components/forms/PostForm";
 import PostList from "../../components/cards/PostList";
 import People from "../../components/People";
+import Link from "next/link";
 
 const Home = () => {
   const [state, setState] = useContext(UserContext);
@@ -130,6 +131,11 @@ const Home = () => {
             <PostList handleDelete={handleDelete} posts={posts} />
           </div>
           <div className="col-md-4">
+            {state && state.user && state.user.following && (
+              <Link href={"/user/following"}>
+                <a className="h6">{state.user.following.length} Following</a>
+              </Link>
+            )}
             <People handleFollow={handleFollow} people={people} />
           </div>
         </div>

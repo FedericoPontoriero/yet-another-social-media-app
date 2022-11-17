@@ -9,6 +9,7 @@ const {
   uploadImage,
   userPost,
   updatePost,
+  newsFeed,
   deletePost,
 } = require("../controllers/post");
 
@@ -31,5 +32,7 @@ router.delete(
   canEditDeletePost,
   deletePost
 );
+
+router.get("/news-feed", requireSignIn, newsFeed);
 
 module.exports = router;
