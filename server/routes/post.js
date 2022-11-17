@@ -11,6 +11,8 @@ const {
   updatePost,
   newsFeed,
   deletePost,
+  likePost,
+  unlikePost,
 } = require("../controllers/post");
 
 const { requireSignIn, canEditDeletePost } = require("../middlewares/auth");
@@ -35,4 +37,6 @@ router.delete(
 
 router.get("/news-feed", requireSignIn, newsFeed);
 
+router.put("like-post", requireSignIn, likePost);
+router.put("unlike-post", requireSignIn, unlikePost);
 module.exports = router;

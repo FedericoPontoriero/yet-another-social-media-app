@@ -109,6 +109,24 @@ const Home = () => {
     }
   };
 
+  const handleLike = async (_id) => {
+    try {
+      const { data } = await axios.put("/like-post", { _id });
+      newsFeed();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleUnlike = async (_id) => {
+    try {
+      const { data } = await axios.put("/unlike-post", { _id });
+      newsFeed();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <UserRoute>
       <div className="container-fluid">
@@ -128,7 +146,12 @@ const Home = () => {
               postSubmit={postSubmit}
             />
             <br />
-            <PostList handleDelete={handleDelete} posts={posts} />
+            <PostList
+              handleLike={handleLike}
+              handleUnlike={handleUnlike}
+              handleDelete={handleDelete}
+              posts={posts}
+            />
           </div>
           <div className="col-md-4">
             {state && state.user && state.user.following && (
