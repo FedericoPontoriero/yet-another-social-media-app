@@ -3,6 +3,7 @@ import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Modal } from "antd";
 
 import UserRoute from "../../components/routes/UserRoute";
 import PostForm from "../../components/forms/PostForm";
@@ -18,6 +19,9 @@ const Home = () => {
   const [uploading, setUploading] = useState(false);
   const [posts, setPosts] = useState([]);
   const [people, setPeople] = useState([]);
+  const [comment, setComment] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [currentPost, setCurrentPost] = useState({});
 
   const router = useRouter();
 
@@ -127,6 +131,19 @@ const Home = () => {
     }
   };
 
+  const handleComment = (post) => {
+    setCurrentPost(post);
+    setVisible(true);
+  };
+
+  const addComment = async () => {
+    console.log("todo");
+  };
+
+  const removeComment = async () => {
+    console.log("todo");
+  };
+
   return (
     <UserRoute>
       <div className="container-fluid">
@@ -151,6 +168,7 @@ const Home = () => {
               handleUnlike={handleUnlike}
               handleDelete={handleDelete}
               posts={posts}
+              handleComment={handleComment}
             />
           </div>
           <div className="col-md-4">
@@ -162,6 +180,14 @@ const Home = () => {
             <People handleFollow={handleFollow} people={people} />
           </div>
         </div>
+        <Modal
+          footer={null}
+          visible={visible}
+          onCancel={() => setVisible(false)}
+          title="Comment"
+        >
+          Show comment form
+        </Modal>
       </div>
     </UserRoute>
   );
