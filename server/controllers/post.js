@@ -165,3 +165,12 @@ export const removeComment = async (req, res) => {
     console.log(err);
   }
 };
+
+export const totalPosts = async (req, res) => {
+  try {
+    const total = await Post.find().estimatedDocumentCount();
+    res.json(total);
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -6,6 +6,7 @@ const router = express.Router();
 const {
   createPost,
   postsByUser,
+  totalPosts,
   uploadImage,
   userPost,
   updatePost,
@@ -44,5 +45,7 @@ router.put("unlike-post", requireSignIn, unlikePost);
 
 router.put("/add-comment", requireSignIn, addComment);
 router.put("/remove-comment", requireSignIn, removeComment);
+
+router.get("/total-posts", totalPosts);
 
 module.exports = router;
