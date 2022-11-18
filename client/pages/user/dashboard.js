@@ -10,6 +10,7 @@ import PostForm from "../../components/forms/PostForm";
 import PostList from "../../components/cards/PostList";
 import People from "../../components/People";
 import Link from "next/link";
+import CommentForm from "../../components/forms/CommentForm";
 
 const Home = () => {
   const [state, setState] = useContext(UserContext);
@@ -136,8 +137,16 @@ const Home = () => {
     setVisible(true);
   };
 
-  const addComment = async () => {
-    console.log("todo");
+  const addComment = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.put("/add-comment", {
+        postId: currentPost._id,
+        comment,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const removeComment = async () => {
@@ -186,7 +195,11 @@ const Home = () => {
           onCancel={() => setVisible(false)}
           title="Comment"
         >
-          Show comment form
+          <CommentForm
+            comment={comment}
+            setComment={setComment}
+            addComment={addComment}
+          />
         </Modal>
       </div>
     </UserRoute>

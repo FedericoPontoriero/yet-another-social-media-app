@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 
 import { UserContext } from "../../context";
 import { imageSource } from "../../functions";
+import Link from "next/link";
 
 const PostList = ({
   posts,
@@ -43,7 +44,10 @@ const PostList = ({
             <div className="card-footer">
               {post.image && <PostImage url={post.image.url} />}
               <div className="d-flex pt-2">
-                {post.likes.includes(state.user._id) ? (
+                {state &&
+                state.user &&
+                post.likes &&
+                post.likes.includes(state.user._id) ? (
                   <HeartFilled
                     onClick={() => handleUnlike(post._id)}
                     className="text-danger pt-2 px-2 h5"
@@ -61,7 +65,11 @@ const PostList = ({
                   onClick={() => handleComment(post)}
                   className="text-danger px-2 pt-2 h5"
                 />
-                <div className="pt-2 px-3"></div>
+                <div className="pt-2 px-3">
+                  <Link href={`/post/${post._id}`}>
+                    <a>{post.comments.length} comments</a>
+                  </Link>
+                </div>
                 {state && state.user && state.user._id === post.postedBy._id && (
                   <>
                     <EditOutlined
@@ -76,6 +84,32 @@ const PostList = ({
                 )}
               </div>
             </div>
+            {post.comments && post.comments.length > 0 && (
+              <ol className="list-group">
+                {post.comments.map((c) => (
+                  <li
+                    list-group-item
+                    d-flex
+                    justify-content-between
+                    align-items-start
+                  >
+                    <div className="ms-2 me-auto">
+                      <div>
+                        <Avatar
+                          size={20}
+                          className="mb-1 mr-3"
+                          src={imageSource(c.postedBy)}
+                        />
+                      </div>
+                      <div>{c.text}</div>
+                    </div>
+                    <span className="text-muted badge rounded-pill">
+                      {moment(c.created).fromNow()}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            )}
           </div>
         ))}
     </>
