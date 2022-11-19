@@ -23,6 +23,7 @@ const PostList = ({
   handleLike,
   handleUnlike,
   handleComment,
+  removeComment,
 }) => {
   const [state] = useContext(UserContext);
   const router = useRouter();
@@ -32,6 +33,7 @@ const PostList = ({
       {posts &&
         posts.map((post) => (
           <Post
+            removeComment={removeComment}
             key={post._id}
             post={post}
             handleDelete={handleDelete}

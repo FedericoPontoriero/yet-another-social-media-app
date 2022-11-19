@@ -3,7 +3,7 @@ import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Modal } from "antd";
+import { Modal, Pagination } from "antd";
 
 import UserRoute from "../../components/routes/UserRoute";
 import PostForm from "../../components/forms/PostForm";
@@ -11,6 +11,7 @@ import PostList from "../../components/cards/PostList";
 import People from "../../components/People";
 import Link from "next/link";
 import CommentForm from "../../components/forms/CommentForm";
+import Search from "../../components/Search";
 
 const Home = () => {
   const [state, setState] = useContext(UserContext);
@@ -23,6 +24,8 @@ const Home = () => {
   const [comment, setComment] = useState("");
   const [visible, setVisible] = useState(false);
   const [currentPost, setCurrentPost] = useState({});
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [page, setPage] = useState(1);
 
   const router = useRouter();
 
@@ -31,11 +34,19 @@ const Home = () => {
       newsFeed();
       findPeople();
     }
-  }, [state && state.token]);
+  }, [state && state.token, page]);
+
+  useEffect(() => {
+    try {
+      axios.get("/total-posts").then(({ data }) => setTotalPosts(data));
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   const newsFeed = async () => {
     try {
-      const { data } = await axios.get("/news-feed");
+      const { data } = await axios.get(`/news-feed/${page}`);
       setPosts(data);
     } catch (err) {
       console.log(err);
@@ -58,6 +69,7 @@ const Home = () => {
       if (data.error) {
         toast.error(data.error);
       } else {
+        setPage(1);
         newsFeed();
         toast.success("Post created");
         setContent("");
@@ -149,8 +161,18 @@ const Home = () => {
     }
   };
 
-  const removeComment = async () => {
-    console.log("todo");
+  const removeComment = async (postId, comment) => {
+    let answer = window.confirm("Are you sure?");
+    if (!answer) return;
+    try {
+      const { data } = await axios.put("/remove-comment", {
+        postId,
+        comment,
+      });
+      newsFeed();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -178,9 +200,18 @@ const Home = () => {
               handleDelete={handleDelete}
               posts={posts}
               handleComment={handleComment}
+              removeComment={removeComment}
+            />
+            <Pagination
+              className="pb-5"
+              current={page}
+              total={(totalPosts / 3) * 10}
+              onChange={(value) => setPage(value)}
             />
           </div>
           <div className="col-md-4">
+            <Search />
+            <br />
             {state && state.user && state.user.following && (
               <Link href={"/user/following"}>
                 <a className="h6">{state.user.following.length} Following</a>
