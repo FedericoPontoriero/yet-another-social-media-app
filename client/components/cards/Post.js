@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 import { UserContext } from "../../context";
 import { imageSource } from "../../functions";
 import Link from "next/link";
-import styleParser from "react-render-html/lib/style-parser";
 
 const Post = ({
   post,

@@ -238,3 +238,22 @@ export const userUnfollow = async (req, res) => {
     console.log(err);
   }
 };
+
+export const searchUser = async (req, res) => {
+  const { query } = req.params;
+  if (!query) return;
+
+  try {
+    // $regex is a method from mongodb
+    // The i modifier is used to perform case-insensitive matching
+    const user = await User.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { username: { $regex: query, $options: "i" } },
+      ],
+    }).select("-password -secret");
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
