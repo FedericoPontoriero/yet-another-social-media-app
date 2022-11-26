@@ -14,6 +14,7 @@ const {
   userFollowing,
   userUnfollow,
   searchUser,
+  getUser,
 } = require("../controllers/auth");
 const { requireSignIn } = require("../middlewares/auth");
 
@@ -32,4 +33,5 @@ router.put("/user-unfollow", requireSignIn, removeFollower, userUnfollow);
 router.get("/user-following", requireSignIn, userFollowing);
 
 router.get("/search-user/:query", searchUser);
+router.get("/user/:username", getUser);
 module.exports = router;

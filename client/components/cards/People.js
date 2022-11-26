@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { List, Avatar } from "antd";
 import moment from "moment";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import { UserContext } from "../context";
 import { imageSource } from "../functions";
@@ -21,7 +22,9 @@ const People = ({ people, handleUnfollow, handleFollow }) => {
             <List.Item.Meta
               title={
                 <div className="d-flex justify-content-between">
-                  {user.username}{" "}
+                  <Link href={`/user/${user.username}`}>
+                    <a>{user.username}</a>
+                  </Link>
                   {state &&
                   state.user &&
                   user.followers &&
