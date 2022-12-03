@@ -16,6 +16,7 @@ const {
   unlikePost,
   addComment,
   removeComment,
+  posts,
 } = require("../controllers/post");
 
 const { requireSignIn, canEditDeletePost } = require("../middlewares/auth");
@@ -47,5 +48,7 @@ router.put("/add-comment", requireSignIn, addComment);
 router.put("/remove-comment", requireSignIn, removeComment);
 
 router.get("/total-posts", totalPosts);
+
+router.get("/posts", posts);
 
 module.exports = router;
