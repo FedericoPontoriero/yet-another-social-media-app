@@ -3,12 +3,21 @@ import { useContext } from "react";
 import ParallaxBG from "../components/cards/ParallaxBG";
 import Post from "../components/cards/Post";
 import { UserContext } from "../context";
+import Head from "next/head";
 
 const Home = ({ posts }) => {
   const [state, setState] = useContext(UserContext);
 
+  const head = () => (
+    <Head>
+      <title>Mern Social Network for devs</title>
+      <meta name="description" content="A social network for developers" />
+    </Head>
+  );
+
   return (
     <>
+      {head()}
       <ParallaxBG url="/images/default.jpg" />
 
       <div className="container">
@@ -24,7 +33,7 @@ const Home = ({ posts }) => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   const { data } = await axios.get("/posts");
   return {
     props: {
