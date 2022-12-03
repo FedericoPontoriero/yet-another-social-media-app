@@ -12,6 +12,14 @@ const Home = ({ posts }) => {
     <Head>
       <title>Mern Social Network for devs</title>
       <meta name="description" content="A social network for developers" />
+      <meta
+        property="og:description"
+        content="A social network for developers"
+      />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="MERN" />
+      {/* <meta property="og:image:secure_url" content="http://mern.com/images/default.jpg" /> */}
+      {/* <meta property="og:url" content='http://socialmediaapp.com'/ >  */}
     </Head>
   );
 
