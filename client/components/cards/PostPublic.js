@@ -42,9 +42,7 @@ const PostPublic = ({ post, commentCount = 10 }) => {
                 {post.likes.length} likes
               </div>
               <CommentOutlined className="text-danger px-2 pt-2 h5" />
-              <div className="pt-2 px-3">
-                <a>{post.comments.length} comments</a>
-              </div>
+              <div className="pt-2 px-3">{post.comments.length} comments</div>
             </div>
           </div>
           {post.comments && post.comments.length > 0 && (

@@ -1,13 +1,20 @@
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ParallaxBG from "../components/cards/ParallaxBG";
 import { UserContext } from "../context";
 import Head from "next/head";
 import Link from "next/link";
 import PostPublic from "../components/cards/PostPublic";
+import io from "socket.io-client";
+
+const socket = io(process.env.NEXT_PUBLIC_SOCKETIO, {
+  reconnection: true,
+});
 
 const Home = ({ posts }) => {
   const [state, setState] = useContext(UserContext);
+
+  useEffect(() => {}, []);
 
   const head = () => (
     <Head>
@@ -32,7 +39,7 @@ const Home = ({ posts }) => {
       <div className="container">
         <div className="row pt-5">
           {posts.map((post) => (
-            <div className="col-md-4">
+            <div key={post._id} className="col-md-4">
               <Link href={`/post/view/${post._id}`}>
                 <a>
                   <PostPublic key={post._id} post={post} />
