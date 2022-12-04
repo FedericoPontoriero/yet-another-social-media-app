@@ -34,7 +34,9 @@ app.use(
 readdirSync("./routes").map((r) => app.use("/api", require(`./routes/${r}`)));
 
 io.on("connect", (socket) => {
-  console.log("SOCKET.IO =>", socket.id);
+  socket.on("new-post", (newPost) => {
+    socket.broadcast.emit("new-post", newPost);
+  });
 });
 
 const port = process.env.PORT || 8000;

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Modal, Pagination } from "antd";
+import io from "socket.io-client";
 
 import UserRoute from "../../components/routes/UserRoute";
 import PostForm from "../../components/forms/PostForm";
@@ -74,6 +75,7 @@ const Home = () => {
         toast.success("Post created");
         setContent("");
         setImage({});
+        socket.emit("new-post", data);
       }
     } catch (err) {
       console.log(err);

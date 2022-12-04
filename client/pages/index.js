@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import ParallaxBG from "../components/cards/ParallaxBG";
 import { UserContext } from "../context";
 import Head from "next/head";
@@ -14,7 +14,13 @@ const socket = io(process.env.NEXT_PUBLIC_SOCKETIO, {
 const Home = ({ posts }) => {
   const [state, setState] = useContext(UserContext);
 
-  useEffect(() => {}, []);
+  const [newsFeed, setNewsFeed] = useState([]);
+
+  useEffect(() => {
+    socket.on("new-post", (newPost) => {
+      setNewsFeed([newPost, ...posts]);
+    });
+  }, []);
 
   const head = () => (
     <Head>
@@ -31,6 +37,8 @@ const Home = ({ posts }) => {
     </Head>
   );
 
+  const collection = newsFeed.length > 0 ? newsFeed : posts;
+
   return (
     <>
       {head()}
@@ -38,7 +46,7 @@ const Home = ({ posts }) => {
 
       <div className="container">
         <div className="row pt-5">
-          {posts.map((post) => (
+          {collection.map((post) => (
             <div key={post._id} className="col-md-4">
               <Link href={`/post/view/${post._id}`}>
                 <a>
