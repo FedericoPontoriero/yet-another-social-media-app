@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 
 import { UserContext } from "../../context";
 import { imageSource } from "../../functions";
-import Link from "next/link";
 
 const PostPublic = ({ post, commentCount = 10 }) => {
   const [state] = useContext(UserContext);
@@ -44,9 +43,7 @@ const PostPublic = ({ post, commentCount = 10 }) => {
               </div>
               <CommentOutlined className="text-danger px-2 pt-2 h5" />
               <div className="pt-2 px-3">
-                <Link href={`/post/${post._id}`}>
-                  <a>{post.comments.length} comments</a>
-                </Link>
+                <a>{post.comments.length} comments</a>
               </div>
             </div>
           </div>
