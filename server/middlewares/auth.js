@@ -36,3 +36,11 @@ export const findPeople = async (req, res) => {
     console.log(err);
   }
 };
+
+export const isAdmin = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+  } catch (err) {
+    console.log(err);
+  }
+};

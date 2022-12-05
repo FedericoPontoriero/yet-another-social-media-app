@@ -16,7 +16,7 @@ const {
   searchUser,
   getUser,
 } = require("../controllers/auth");
-const { requireSignIn } = require("../middlewares/auth");
+const { requireSignIn, isAdmin } = require("../middlewares/auth");
 
 router.post("/register", register);
 router.post("/login", login);
@@ -34,4 +34,6 @@ router.get("/user-following", requireSignIn, userFollowing);
 
 router.get("/search-user/:query", searchUser);
 router.get("/user/:username", getUser);
+
+router.get("/current-admin", requireSignIn, isAdmin, currentUser);
 module.exports = router;

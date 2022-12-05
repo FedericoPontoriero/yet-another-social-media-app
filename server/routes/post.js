@@ -20,7 +20,11 @@ const {
   posts,
 } = require("../controllers/post");
 
-const { requireSignIn, canEditDeletePost } = require("../middlewares/auth");
+const {
+  requireSignIn,
+  canEditDeletePost,
+  isAdmin,
+} = require("../middlewares/auth");
 
 router.post("/create-post", requireSignIn, createPost);
 router.post(
@@ -53,5 +57,8 @@ router.get("/total-posts", totalPosts);
 router.get("/posts", posts);
 
 router.get("/post:_id", getPost);
+
+//admin
+router.delete("/admin/delete-post/:_id", requireSignIn, isAdmin, deletePost);
 
 module.exports = router;
