@@ -3,8 +3,9 @@ import { UserContext } from "../../context";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import renderHTML from "react-render-html";
 
-import UserRoute from "../../components/routes/UserRoute";
+import AdminRoute from "../../components/routes/AdminRoute";
 
 const Admin = () => {
   const [state, setState] = useContext(UserContext);
@@ -41,7 +42,7 @@ const Admin = () => {
   };
 
   return (
-    <UserRoute>
+    <AdminRoute>
       <div className="container-fluid">
         <div className="row py-5 bg-default-image text-light">
           <div className="col text-center">
@@ -50,18 +51,19 @@ const Admin = () => {
         </div>
         <div className="row py-4">
           <div className="col-md-8 offset-md-2">
-            {posts.map((p) => (
-              <div key={post._id}>
-                {p.content} - <b>{p.postedBy.name}</b>{" "}
-                <span className="text-danger" onClick={() => handleDelete(p)}>
-                  Delete
-                </span>
-              </div>
-            ))}
+            {posts &&
+              posts.map((p) => (
+                <div className="d-flex justify-content-between" key={p._id}>
+                  <div>{renderHTML(p.content)}</div>
+                  <div className="text-danger" onClick={() => handleDelete(p)}>
+                    Delete
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>
-    </UserRoute>
+    </AdminRoute>
   );
 };
 
